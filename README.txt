@@ -1,5 +1,4 @@
 Jay Ni
-3035775248
 jayn3062@berkeley.edu
 
 Description of Files
