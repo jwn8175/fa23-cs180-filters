@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CS180 Project 2</title>
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                margin: 0% 5% 0% 5%;
+            }
+            .image-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .inner-image-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            h3 {
+                font-size: 135%;
+            }
+            p {
+                font-size: 130%;
+            }
+            li {
+                font-size: 130%;
+            }
+            figure {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .im-small {
+                align-self: center;
+                width: 235px;
+            }
+            figcaption {
+                text-align: center;
+                width: 235px;
+            }
+            .im-large {
+                align-self: center;
+                width: 400px;
+            }
+            .figcaption-large {
+                text-align: center;
+                width: 400px;
+            }
+        </style>
+    </head>
+
+    <body style="background-color: slategray">
+        <div class="container">
+            <div>
+                <h1>Fun with Filters and Frequencies!</h1>
+                <h3>By Jay Ni</h3>
+                <hr />
+            </div>
+
+            <div>
+                <h2>Part 1: Fun with Filters</h2>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/cameraman.png" class="im-large" />
+                        <figcaption class="figcaption-large">
+                            Cameraman image that we will operate on in this
+                            section
+                        </figcaption>
+                    </figure>
+                </div>
+                <h3>Part 1.1: Finite Difference Operator</h3>
+                <p>
+                    First, I convolved the original Cameraman image with the
+                    finite difference operators, D_x = [[1, -1]], D_y = [[1],
+                    [-1]]. The partial derivative outputs are shown below on the
+                    left. In order to compute the gradient magnitude image, I
+                    squared both derivatives, added them together, then took the
+                    square root of the output. All three of these operations
+                    were done element-wise. The final binarized output was
+                    generated with threshold = 0.275.
+                </p>
+                <div class="image-container">
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/cameraman_pdx.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to x of the
+                                Cameraman image
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/cameraman_pdy.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to y of the
+                                Cameraman image
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/cameraman_grad_mag.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Gradient magnitude image of the Cameraman image
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/cameraman_binarized_grad_mag.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Binarized gradient magnitude image of the
+                                Cameraman image
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <h3>Part 1.2: Derivative of Gaussian (DoG) Filter</h3>
+                <p>
+                    Since the results of directly interacting with the Cameraman
+                    image were quite noisy, we can first apply a blur via a 2D
+                    Gaussian filter. All Gaussian filters used in this project
+                    are created by making the kernel width to be about 6 *
+                    sigma, rounded to the nearest odd number. This way, I can
+                    fine tune the sigma value, which is continuous, until a
+                    satisfactory blur is reached. This critera of chosing the
+                    kernel size is following the professor's advice from
+                    lecture.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img
+                            src="./images/cameraman_blurred.jpg"
+                            class="im-large"
+                        />
+                        <figcaption class="figcaption-large">
+                            Cameraman image blurred with a Gaussian filter
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>
+                    The images on the left show the partial derivatives of the
+                    image after applying blurring. The final binarized edge
+                    image has much less noise and stronger edges.
+                </p>
+                <div class="image-container">
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_pdx.jpeg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to x of the
+                                blurred Cameraman image
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_pdy.jpeg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to y of the
+                                blurred Cameraman image
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_grad_mag.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Gradient magnitude image of the blurred
+                                Cameraman image
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_binarized_grad_mag.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Binarized gradient magnitude image of the
+                                blurred Cameraman image
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <p>
+                    By applying the convolution to the Guassian filter instead
+                    of the blurring the image first, one less oepration is
+                    performed. The left two images are the partial derivatives
+                    of the Gaussian filter used in this part. The final
+                    binarized output of this procedure is nearly identical to
+                    above.
+                </p>
+                <div class="image-container">
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/gaussian_pdx.jpeg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to x of the
+                                Gaussian filter
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/gaussian_pdy.jpeg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Partial derivative with respect to y of the
+                                Gaussian filter
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_grad_mag_1.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Gradient magnitude image of the blurred
+                                Cameraman
+                            </figcaption>
+                            <figcaption>
+                                image by convolving the orignal with the DoG
+                                filters
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/cameraman_blurred_binarized_grad_mag_1.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>
+                                Binarized gradient magnitude image of the
+                                blurred Cameraman image by convolving the
+                                orignal with the DoG filters
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <hr />
+            </div>
+
+            <div>
+                <h2>Part 2: Fun with Frequencies!</h2>
+                <h3>Part 2.1: Image "Sharpening"</h3>
+                <p>
+                    In this section, sharper images are created by extracting
+                    the higher frequnecies of an image and then adding them back
+                    to the orignal. To acquire the higher frequencies, I
+                    subtracted the blurred image from the original. This is
+                    equivalent to performing a high-pass filter on the original
+                    image. Then, I scaled the higher frequencies by some alpha
+                    before adding them back.
+                </p>
+                <p>
+                    This process can actually be performed with one convolution
+                    from the following derivation: f + alpha * (f - f * g) = f *
+                    ((1 + alpha) e - alpha * g). f is the original image, g is
+                    the Gaussian filter used to blur the image, and e is the
+                    unit impulse. The "*" operator between two images represents
+                    a convolution.
+                </p>
+                <p>
+                    Below are the results of sharpening the Taj Mahal with
+                    alpha=2.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/taj.jpg" class="im-small" />
+                        <figcaption>Taj Mahal</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/taj_blurred.jpg" class="im-small" />
+                        <figcaption>Blurred Taj Mahal</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/taj_high.jpg" class="im-small" />
+                        <figcaption>
+                            High Frequencies of the Taj Mahal Image
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/taj_sharp.jpeg" class="im-small" />
+                        <figcaption>Sharpened Taj Mahal</figcaption>
+                    </figure>
+                </div>
+                <p>
+                    The same procedure as above, this time on an image of the
+                    Forbidden City in China. Sharpened with alpha=2.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img
+                            src="./images/forbidden_city.jpg"
+                            class="im-small"
+                        />
+                        <figcaption>The Forbidden City</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/fcity_blurred.jpg"
+                            class="im-small"
+                        />
+                        <figcaption>Blurred Forbidden City</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/fcity_high.jpg" class="im-small" />
+                        <figcaption>
+                            High Frequencies of the Forbidden City Image
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/fcity_sharp.jpeg" class="im-small" />
+                        <figcaption>Sharpened Forbidden City</figcaption>
+                    </figure>
+                </div>
+                <p>
+                    This is a sharpened image with alpha=5. Then it is blurred,
+                    then sharpened again with alpha=2 to compare with. The edges
+                    of the resharpened image are much more prominenet than both
+                    the original and the sharpened original. The resharpened
+                    image also looks grainy in comparison.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/flowers.jpeg" class="im-small" />
+                        <figcaption>The Original Image</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/flower_sharpened.jpeg"
+                            class="im-small"
+                        />
+                        <figcaption>Sharpened with alpha=5</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/flower_blurred.jpeg"
+                            class="im-small"
+                        />
+                        <figcaption>Blurred sharp image</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/flower_resharpened.jpeg"
+                            class="im-small"
+                        />
+                        <figcaption>Resharpened image</figcaption>
+                    </figure>
+                </div>
+                <h3>Part 2.2: Hybrid Images</h3>
+                <p>
+                    This section of the project showcases some hybrid images
+                    made using the process outlined in the SIGGRAPH 2006 paper
+                    by Oliva, Torralba, and Schyns. Given two images to combine,
+                    one is low-pass filtered while the other is high-pass
+                    filtered. Then, the filter outputs are added together in
+                    order to create the final product. These hybrid images
+                    display different things as a function of viewing distance.
+                    Some of the hybrid images below contain artifacts due to the
+                    provided image alignment algorithm.
+                </p>
+                <p>
+                    This is a hybrid image between Derek and his cat Nutmeg. For
+                    this set, the Fourier analysis images are included.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/derek.jpg" width="235px" />
+                        <figcaption>Derek</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/nutmeg.jpg" width="235px" />
+                        <figcaption>Nutmeg</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/derek_nutmeg.jpg" width="235px" />
+                        <figcaption>
+                            Hybrid Image of Derek and Nutmeg
+                        </figcaption>
+                        <figcaption>
+                            Up close is Nutmeg the cat, from afar it is Derek.
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/derek_freq.jpg" class="im-small" />
+                        <figcaption>Fourier Transform of Derek</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/derek_filtered_freq.jpg"
+                            class="im-small"
+                        />
+                        <figcaption>
+                            Fourier Transform of Filtered Derek
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/nutmeg_freq.jpg" class="im-small" />
+                        <figcaption>Fourier Transform of Nutmeg</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/nutmeg_filtered_freq.jpg"
+                            class="im-small"
+                        />
+                        <figcaption>
+                            Fourier Transform of Filtered Nutmeg
+                        </figcaption>
+                    </figure>
+                </div>
+                <div class="image-container">
+                    <figure>
+                        <img
+                            src="./images/im_hybrid_freq.jpg"
+                            class="im-small"
+                        />
+                        <figcaption>
+                            Fourier Transform of the Derek-Nutmeg Hybrid
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>
+                    My sink at home. The images aligned surprisingly well by the
+                    top left and bottom right corners.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/sink_empty.jpg" class="im-small" />
+                        <figcaption>Empty Sink</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/sink_full.jpg" class="im-small" />
+                        <figcaption>Full Sink</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/sink_hybrid.jpg" class="im-small" />
+                        <figcaption>
+                            From afar, the sink look empty, but upon closer
+                            inspection it is full!
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>
+                    A popular, albit slightly outdated meme format featuring a
+                    normal looking Winnie the Pooh and a fancy, smug looking
+                    one. The facial expression change is easy to see, however,
+                    the high-passed tux Pooh is too strong, resulting in the bow
+                    tie to be mostly visible even from afar.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/pooh_normal.jpeg" class="im-small" />
+                        <figcaption>Normal Pooh</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/pooh_tux.jpeg" class="im-small" />
+                        <figcaption>Fancy Tuxedo Pooh</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/pooh_hybrid.jpg" height="237px" />
+                        <figcaption>
+                            Pooh's expression and dress changes if viewed from
+                            different distances.
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>My dog Coco with a changing expression.</p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/coco2.jpeg" class="im-small" />
+                        <figcaption>Coco with no expression</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/coco.jpeg" class="im-small" />
+                        <figcaption>Coco with a big smile!</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/coco_sqrt.jpg" class="im-small" />
+                        <figcaption>Coco with an expression change</figcaption>
+                    </figure>
+                </div>
+                <p>
+                    Coco returns to combine with an anime character. However,
+                    the resulting output did not turn out very well. The anime
+                    character's facial trails (noise, mouth) are not
+                    distinguished enough to be visible after blurring.
+                    Additionally, the top of their heads and bottom of the jaws
+                    do not match up. I tried using the nose and one eye as an
+                    alignment point, the output was worse than this.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/anime.jpeg" class="im-small" />
+                        <figcaption>Anime Character</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/coco.jpeg" class="im-small" />
+                        <figcaption>Coco</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/anime_coco.jpg" class="im-small" />
+                        <figcaption>
+                            Doesn't look too great due to head size mismatch and
+                            other factors.
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>
+                    This was an attempt to diplay a change over time with an
+                    hybrid image. However, since the edge of the black shelf
+                    against the white wall stood out too much, you can still see
+                    a line run through the stuffed creatures when looking
+                    closely. The bottom half of the creatures are noticably
+                    darker as well.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/shelf_empty.jpg" class="im-small" />
+                        <figcaption>Empty Shelf</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/shelf_full.jpg" class="im-small" />
+                        <figcaption>Shelf with Friends</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/shelf_hybrid.jpg" class="im-small" />
+                        <figcaption>
+                            Can somewhat see the shelf behind the silhouette of
+                            stuffed creatures.
+                        </figcaption>
+                    </figure>
+                </div>
+                <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
+                <p>
+                    The implementation of Gaussian and Laplacian stacks are done
+                    in this section in order to be used in multiresolution
+                    blending in the next part.
+                </p>
+                <p>
+                    The Gaussian stack is implemented simply by repeatedly
+                    applying the same Gaussian filter to an image for however
+                    many layers. The Laplacian stack is implemented by taking
+                    the i-th layer of the Gaussian stack and subtracting it by
+                    the i+1-th layer.
+                </p>
+                <p>
+                    Below are original images of the apple and orange, followed
+                    by their respective successive Laplacian stacks, ending with
+                    the highest layer of Gaussian stack.
+                </p>
+                <div class="image-container">
+                    <div class="inner-image-container">
+                        <figure>
+                            <img src="./images/apple.jpeg" class="im-small" />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_0.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_1.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_2.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_3.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_4.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_5.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/apple_laplacian_6.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img src="./images/orange.jpeg" class="im-small" />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_0.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_1.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_2.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_3.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_4.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_5.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/orange_laplacian_6.jpeg"
+                                class="im-small"
+                            />
+                        </figure>
+                    </div>
+                </div>
+                <h3>Part 2.4: Multiresolution Blending</h3>
+                <p>
+                    The Gaussian and Laplacian stacks created in the previous
+                    part are used in this section to blend images together. This
+                    approach outlines the algorithm outlined in page 230 of the
+                    1983 paper by Burt and Adelson. It is as follows:
+                </p>
+                <ol>
+                    <li>
+                        Build Laplacian pyramids LA and LB for images A and B
+                        respectively.
+                    </li>
+                    <li>Build a Gaussian pyramid GM for the region mask M.</li>
+                    <li>
+                        Form a combined stack LS from LA and LB using the nodes
+                        of GM as weights, such that for all l=layer: LS_l = GM_l
+                        * LA_l + (1 - GM_l) * LB_l. Element-wise multiplication
+                        is performed here.
+                    </li>
+                    <li>
+                        Obtain the output blended image by summing up all layers
+                        of LS.
+                    </li>
+                </ol>
+                <p>
+                    The technique of convolving a mask with a Gaussian then
+                    using it as a weighting when combining images makes it so
+                    that the seam between the two images are smoother and more
+                    natural-looking.
+                </p>
+                <p>
+                    Below is an oraple that is created from the Laplacian stacks
+                    shown above in combination with a vertical mask.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/oraple.jpeg" class="im-large" />
+                        <figcaption class="figcaption-large">
+                            The Oraple
+                        </figcaption>
+                    </figure>
+                </div>
+                <p>Other Blended Images</p>
+                <p>
+                    This is a combination of two of my favorite soft drinks:
+                    Coca-Cola and Hey Song Sarsaparilla. A horizontal mask was
+                    used. Since both have red-ish cans, the blend is pretty
+                    natural looking.
+                </p>
+                <div class="image-container">
+                    <figure>
+                        <img src="./images/heysong.jpeg" class="im-small" />
+                        <figcaption>Hey Song Soda Can</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="./images/coke.jpeg" class="im-small" />
+                        <figcaption>Coke Can</figcaption>
+                    </figure>
+                    <figure>
+                        <img
+                            src="./images/heysong_coke.jpeg"
+                            class="im-small"
+                        />
+                        <figcaption>Hey Song with Coke</figcaption>
+                    </figure>
+                </div>
+                <p>
+                    This is a blend between my eye and my hand. The irregular
+                    mask used is also shown.
+                </p>
+                <div class="image-container">
+                    <div class="inner-image-container">
+                        <figure>
+                            <img src="./images/hand.jpeg" class="im-small" />
+                            <figcaption>My Hand</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="./images/eye.jpeg" class="im-small" />
+                            <figcaption>My Eye</figcaption>
+                        </figure>
+                    </div>
+                    <div class="inner-image-container">
+                        <figure>
+                            <img
+                                src="./images/hand_eye_mask.jpg"
+                                class="im-small"
+                            />
+                            <figcaption>Mask Used</figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="./images/hand_eye.jpeg"
+                                class="im-small"
+                            />
+                            <figcaption>My Hand with Eye</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <hr />
+            </div>
+        </div>
+    </body>
+</html>
